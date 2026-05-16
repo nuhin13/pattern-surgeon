@@ -1,6 +1,7 @@
 setup() {
   TMP="$(mktemp -d)"; cd "$TMP"
-  git init -q; git config user.email t@t; git config user.name t
+  export GIT_AUTHOR_NAME=t GIT_AUTHOR_EMAIL=t@t GIT_COMMITTER_NAME=t GIT_COMMITTER_EMAIL=t@t
+  git init -q
   echo a > f.txt; git add .; git commit -qm init
   echo b > f.txt   # dirty working tree
 }
