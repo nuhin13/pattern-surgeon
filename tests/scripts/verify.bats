@@ -13,20 +13,27 @@ EOF
 }
 teardown() { rm -rf "$TMP"; }
 
-@test "verify passes when typecheck and tests are green" {
+@test "verify exits 0 when typecheck and tests are green" {
   run bash "$SCRIPT"
   [ "$status" -eq 0 ]
 }
 
-@test "verify fails when typecheck is red" {
+@test "verify exits 2 when typecheck is red" {
   echo "export const x: number = 'no';" > index.ts
   run bash "$SCRIPT"
-  [ "$status" -ne 0 ]
+  [ "$status" -eq 2 ]
 }
 
-@test "verify fails when test script is red" {
+@test "verify exits 3 when test script is red" {
   echo "export const x: number = 1;" > index.ts
   node -e "let p=require('./package.json');p.scripts.test='node -e \"process.exit(1)\"';require('fs').writeFileSync('package.json',JSON.stringify(p))"
   run bash "$SCRIPT"
-  [ "$status" -ne 0 ]
+  [ "$status" -eq 3 ]
+}
+
+@test "verify exits 4 when no test script" {
+  echo "export const x: number = 1;" > index.ts
+  node -e "let p=require('./package.json');delete p.scripts.test;require('fs').writeFileSync('package.json',JSON.stringify(p))"
+  run bash "$SCRIPT"
+  [ "$status" -eq 4 ]
 }
