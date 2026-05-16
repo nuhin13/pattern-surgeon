@@ -274,10 +274,15 @@ sha="${1:?usage: rollback.sh <checkpoint-sha>}"
 echo "===== REJECTED DIFF (attempted change, now reverted) ====="
 git diff "$sha" -- . || true
 echo "=========================================================="
-git checkout "$sha" -- . 2>/dev/null || git restore --source="$sha" -- . 
-git stash drop >/dev/null 2>&1 || true
+git checkout "$sha" -- . 2>/dev/null || git restore --source="$sha" -- .
 echo "pattern-surgeon: rolled back to $sha"
 ```
+
+> NOTE: do NOT add `git stash drop`. checkpoint.sh uses `git stash create`
+> (a dangling commit, NOT pushed to the stash list), so `git stash drop` would
+> destroy an unrelated user `stash@{0}` — data loss. The dangling commit is
+> reclaimed by git GC; no cleanup needed. A regression test
+> ("rollback preserves unrelated pre-existing user stashes") guards this.
 
 - [ ] **Step 4: Run test to verify it passes**
 
