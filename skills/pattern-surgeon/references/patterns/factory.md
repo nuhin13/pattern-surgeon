@@ -22,7 +22,46 @@ const conn = cfg.driver === "pg"
 4. Callers depend on `createConn` + `Conn`, never on concretes.
 
 ```python
-# TODO(phase-1): python example
+from typing import Protocol
+
+
+class Conn(Protocol):
+    kind: str
+
+    def query(self, sql: str) -> list[dict]: ...
+
+
+class PgConn:
+    kind = "pg"
+
+    def __init__(self, url: str) -> None:
+        self.url = url
+
+    def query(self, sql: str) -> list[dict]:
+        return []
+
+
+class MySQLConn:
+    kind = "mysql"
+
+    def __init__(self, url: str) -> None:
+        self.url = url
+
+    def query(self, sql: str) -> list[dict]:
+        return []
+
+
+def create_conn(cfg: dict) -> Conn:
+    driver = cfg["driver"]
+    if driver == "pg":
+        return PgConn(cfg["url"])
+    if driver == "mysql":
+        return MySQLConn(cfg["url"])
+    raise ValueError(f"unknown driver {driver}")
+
+
+# callers:
+# conn = create_conn(cfg)
 ```
 ```java
 // TODO(phase-2): java example

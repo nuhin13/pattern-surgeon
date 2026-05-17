@@ -21,7 +21,28 @@ await stripe.charges.create({ amount, currency, source });
 4. Callers depend on `Port`; the adapter is wired at the composition root.
 
 ```python
-# TODO(phase-1): python example
+from typing import Protocol
+
+
+class PaymentPort(Protocol):
+    # domain terms: dollars in, returns vendor charge id-equivalent (cents charged)
+    def charge(self, amount_dollars: float, currency: str) -> int: ...
+
+
+def vendor_charge(cents: int, currency: str) -> int:
+    # fake 3rd-party vendor API: works in integer cents + lowercase->uppercase code
+    return cents
+
+
+class StripeAdapter:
+    def charge(self, amount_dollars: float, currency: str) -> int:
+        # convert domain shape -> vendor shape inside the adapter only
+        cents = round(amount_dollars * 100)
+        return vendor_charge(cents, currency.upper())
+
+
+# callers depend on PaymentPort; adapter wired at the composition root:
+# payments: PaymentPort = StripeAdapter()
 ```
 ```java
 // TODO(phase-2): java example

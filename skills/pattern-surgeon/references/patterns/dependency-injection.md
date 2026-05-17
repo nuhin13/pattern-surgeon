@@ -22,7 +22,40 @@ class OrderService {
 3. Pass test doubles in tests via the same constructor.
 
 ```python
-# TODO(phase-1): python example
+from datetime import datetime
+from typing import Protocol
+
+
+# BEFORE: hidden, untestable collaborators
+# class OrderService:
+#     def __init__(self) -> None:
+#         self.db = Db(os.environ["DB_URL"])   # hidden
+#         self.clock = datetime               # global
+
+
+# AFTER: collaborators lifted to constructor params, typed by Protocols
+class DbPort(Protocol):
+    def insert(self, order: dict) -> None: ...
+
+
+class Clock(Protocol):
+    def now(self) -> datetime: ...
+
+
+class OrderService:
+    def __init__(self, db: DbPort, clock: Clock) -> None:
+        self._db = db
+        self._clock = clock
+
+    def place(self, order: dict) -> None:
+        self._db.insert({**order, "at": self._clock.now()})
+
+
+# composition root: wire the real implementations
+# svc = OrderService(Db(os.environ["DB_URL"]), SystemClock())
+
+# test: a test double can be injected via the same constructor
+# svc = OrderService(FakeDb(), FixedClock(datetime(2026, 1, 1)))
 ```
 ```java
 // TODO(phase-2): java example

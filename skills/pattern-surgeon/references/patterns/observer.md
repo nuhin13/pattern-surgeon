@@ -25,7 +25,42 @@ class Order {
 3. Consumers register themselves; producer no longer imports them.
 
 ```python
-# TODO(phase-1): python example
+from typing import Callable, Generic, TypeVar
+
+E = TypeVar("E")
+Listener = Callable[[E], None]
+
+
+class Subject(Generic[E]):
+    def __init__(self) -> None:
+        self._ls: list[Listener[E]] = []
+
+    def subscribe(self, listener: Listener[E]) -> Callable[[], None]:
+        self._ls.append(listener)
+
+        def unsubscribe() -> None:
+            self._ls = [x for x in self._ls if x is not listener]
+
+        return unsubscribe
+
+    def notify(self, event: E) -> None:
+        for listener in list(self._ls):
+            listener(event)
+
+
+# producer emits a domain event instead of calling consumers:
+order_completed: Subject[dict] = Subject()
+# order_completed.subscribe(lambda o: email_service.send(o))
+# order_completed.subscribe(lambda o: analytics.track(o))
+
+
+class Order:
+    def __init__(self) -> None:
+        self.status = "open"
+
+    def complete(self) -> None:
+        self.status = "done"
+        order_completed.notify({"order": self})
 ```
 ```java
 // TODO(phase-2): java example

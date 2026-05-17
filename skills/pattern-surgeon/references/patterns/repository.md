@@ -23,7 +23,40 @@ async function activate(id: string) {
 3. Inject the repository into services; services hold only rules.
 
 ```python
-# TODO(phase-1): python example
+from dataclasses import dataclass, replace
+from typing import Protocol
+
+
+@dataclass
+class User:
+    id: str
+    status: str
+
+
+class UserRepository(Protocol):
+    def find_by_id(self, id: str) -> User | None: ...
+    def save(self, u: User) -> None: ...
+
+
+class InMemoryUserRepository:
+    def __init__(self) -> None:
+        self._store: dict[str, User] = {}
+
+    def find_by_id(self, id: str) -> User | None:
+        return self._store.get(id)
+
+    def save(self, u: User) -> None:
+        self._store[u.id] = replace(u)
+
+
+def activate(id: str, users: UserRepository) -> None:
+    # service holds only rules; depends on the Protocol, not the store
+    u = users.find_by_id(id)
+    if u is None:
+        raise LookupError("not found")
+    if u.status == "banned":
+        raise ValueError("banned")
+    users.save(replace(u, status="active"))
 ```
 ```java
 // TODO(phase-2): java example

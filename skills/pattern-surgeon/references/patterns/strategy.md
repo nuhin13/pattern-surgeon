@@ -23,7 +23,38 @@ function price(kind: string, base: number) {
 4. Inject/select the strategy at the call boundary.
 
 ```python
-# TODO(phase-1): python example
+from typing import Protocol
+
+
+class PricingStrategy(Protocol):
+    def price(self, base: float) -> float: ...
+
+
+class Regular:
+    def price(self, base: float) -> float:
+        return base
+
+
+class Vip:
+    def price(self, base: float) -> float:
+        return base * 0.8
+
+
+class Staff:
+    def price(self, base: float) -> float:
+        return base * 0.5
+
+
+STRATEGIES: dict[str, PricingStrategy] = {
+    "regular": Regular(),
+    "vip": Vip(),
+    "staff": Staff(),
+}
+
+
+def price(kind: str, base: float) -> float:
+    # default/unknown branch preserved: KeyError signals an unknown kind
+    return STRATEGIES[kind].price(base)
 ```
 ```java
 // TODO(phase-2): java example
