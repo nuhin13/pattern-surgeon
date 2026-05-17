@@ -20,6 +20,24 @@ await stripe.charges.create({ amount, currency, source });
 3. Convert library shapes ↔ domain shapes inside the adapter only.
 4. Callers depend on `Port`; the adapter is wired at the composition root.
 
+```python
+# TODO(phase-1): python example
+```
+```java
+// TODO(phase-2): java example
+```
+```csharp
+// TODO(phase-3): csharp example
+```
+```php
+// TODO(phase-4): php example
+```
+
+## Framework idiom
+- Spring Boot: no framework-specific idiom; the adapter is a normal `@Component`.
+- .NET Core: no framework-specific idiom; register the adapter against its port interface in DI.
+- Laravel: no framework-specific idiom; bind the port to the adapter in a ServiceProvider.
+
 ## Before / After
 Before: `stripe.charges.create(...)` sprinkled everywhere.
 After:

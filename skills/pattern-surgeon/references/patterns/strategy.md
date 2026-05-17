@@ -22,6 +22,24 @@ function price(kind: string, base: number) {
 3. Replace conditionals with a `Record<string, PricingStrategy>` lookup.
 4. Inject/select the strategy at the call boundary.
 
+```python
+# TODO(phase-1): python example
+```
+```java
+// TODO(phase-2): java example
+```
+```csharp
+// TODO(phase-3): csharp example
+```
+```php
+// TODO(phase-4): php example
+```
+
+## Framework idiom
+- Spring Boot: no framework-specific idiom; a `@Component` may hold the strategy map.
+- .NET Core: no framework-specific idiom; register strategies via keyed DI if desired.
+- Laravel: no framework-specific idiom; resolve strategy from the service container if desired.
+
 ## Before / After
 Before: the conditional above duplicated in checkout + invoice.
 After:

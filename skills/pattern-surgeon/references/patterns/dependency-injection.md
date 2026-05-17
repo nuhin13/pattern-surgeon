@@ -21,6 +21,24 @@ class OrderService {
 2. Construct and wire the real implementations at the composition root.
 3. Pass test doubles in tests via the same constructor.
 
+```python
+# TODO(phase-1): python example
+```
+```java
+// TODO(phase-2): java example
+```
+```csharp
+// TODO(phase-3): csharp example
+```
+```php
+// TODO(phase-4): php example
+```
+
+## Framework idiom
+- Spring Boot: use constructor injection with `@Component`/`@Service`; let the container wire — do not `new` collaborators.
+- .NET Core: register in `IServiceCollection` (`AddScoped`/`AddSingleton`) and constructor-inject; do not `new`.
+- Laravel: type-hint collaborators in the constructor; the service container auto-resolves; bind interfaces in a ServiceProvider.
+
 ## Before / After
 Before: `class OrderService { db = new Db() }`.
 After:

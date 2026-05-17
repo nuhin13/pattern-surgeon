@@ -24,6 +24,24 @@ class Order {
 2. Producer emits a domain event instead of calling consumers.
 3. Consumers register themselves; producer no longer imports them.
 
+```python
+# TODO(phase-1): python example
+```
+```java
+// TODO(phase-2): java example
+```
+```csharp
+// TODO(phase-3): csharp example
+```
+```php
+// TODO(phase-4): php example
+```
+
+## Framework idiom
+- Spring Boot: prefer `ApplicationEventPublisher` + `@EventListener` over a hand-rolled subject.
+- .NET Core: prefer `IObservable<T>`/events or `MediatR` notifications over a hand-rolled subject.
+- Laravel: prefer Laravel Events & Listeners over a hand-rolled subject.
+
 ## Before / After
 Before: `Order.complete()` calls `emailService` / `analytics` / `inventory`.
 After:

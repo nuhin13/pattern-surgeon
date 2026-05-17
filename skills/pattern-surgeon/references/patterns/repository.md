@@ -22,6 +22,24 @@ async function activate(id: string) {
 2. Move all data access into a concrete implementation of it.
 3. Inject the repository into services; services hold only rules.
 
+```python
+# TODO(phase-1): python example
+```
+```java
+// TODO(phase-2): java example
+```
+```csharp
+// TODO(phase-3): csharp example
+```
+```php
+// TODO(phase-4): php example
+```
+
+## Framework idiom
+- Spring Boot: extend Spring Data `JpaRepository<T,ID>`; do not hand-roll a DAO.
+- .NET Core: use EF Core `DbContext`/`DbSet<T>` (optionally a repository over it).
+- Laravel: use an Eloquent model or a repository bound in a ServiceProvider; do not bypass Eloquent.
+
 ## Before / After
 Before: `await db.query("SELECT ...")` inside the service.
 After:

@@ -21,6 +21,24 @@ const conn = cfg.driver === "pg"
 3. Move the conditional construction into the factory only.
 4. Callers depend on `createConn` + `Conn`, never on concretes.
 
+```python
+# TODO(phase-1): python example
+```
+```java
+// TODO(phase-2): java example
+```
+```csharp
+// TODO(phase-3): csharp example
+```
+```php
+// TODO(phase-4): php example
+```
+
+## Framework idiom
+- Spring Boot: prefer `@Bean` methods in a `@Configuration` class over a hand-rolled factory.
+- .NET Core: prefer a typed factory delegate or `IServiceProvider`; avoid hand-rolled switch factories.
+- Laravel: prefer the container `make()` / model factories over a hand-rolled factory.
+
 ## Before / After
 Before: `new MySQLConn()` / `new PgConn()` chosen inline in many modules.
 After:
