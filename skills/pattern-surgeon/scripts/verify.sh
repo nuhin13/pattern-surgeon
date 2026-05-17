@@ -24,7 +24,7 @@ elif [ -f pom.xml ]; then
 elif [ -f build.gradle ] || [ -f build.gradle.kts ]; then
   STACK="gradle"; TYPECHECK="./gradlew -q compileJava"; TEST="./gradlew -q test"
   [ -x ./gradlew ] || { TYPECHECK="gradle -q compileJava"; TEST="gradle -q test"; }
-elif ls ./*.sln ./*.csproj >/dev/null 2>&1; then
+elif compgen -G './*.sln' >/dev/null || compgen -G './*.slnx' >/dev/null || compgen -G './*.csproj' >/dev/null; then
   STACK="dotnet"; TYPECHECK="dotnet build -clp:ErrorsOnly"; TEST="dotnet test --nologo"
 elif [ -f composer.json ]; then
   STACK="composer"

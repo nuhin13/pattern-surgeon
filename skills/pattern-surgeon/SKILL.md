@@ -56,6 +56,7 @@ Framework when-NOT (suppress hand-rolled machinery):
   scope). List remaining opportunities as a deferred checklist; do not churn
   the whole file.
 - Match the surrounding code's conventions, not a textbook ideal.
+- If the scope file is untracked by git, ask the user to git-add it before refactoring; otherwise rollback cannot restore it — recommend-only.
 
 ## Output contract
 Recommendation: `<pattern>` — why / tradeoff / when-NOT ruled out.

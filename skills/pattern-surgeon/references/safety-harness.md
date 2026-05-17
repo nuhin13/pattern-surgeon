@@ -12,3 +12,9 @@ Never keep an edit without a green verify.
    - Exit 4 (no test script) → see legacy handling in SKILL.md; do NOT keep
      unverified edits.
 4. One auto-retry maximum. After a second failure, stop and report. Never loop.
+
+## Limitation
+`checkpoint.sh` snapshots tracked files only (`git stash create` ignores
+untracked files). If the scope file is not yet git-tracked, the refactor
+cannot be safely auto-reverted: ask the user to `git add` it first (a bare
+`git add -N` is enough), or fall back to recommend-only.

@@ -44,3 +44,11 @@ EOF
   run bash "$SCRIPT"
   [ "$status" -eq 4 ]
 }
+
+@test "router: dotnet project detected via .slnx" {
+  printf '<Project Sdk="Microsoft.NET.Sdk"></Project>\n' > app.csproj
+  : > app.slnx
+  rm -f app.csproj   # only .slnx present, no .csproj/.sln
+  run bash "$SCRIPT"
+  echo "$output" | grep -q 'detected stack=dotnet'
+}
