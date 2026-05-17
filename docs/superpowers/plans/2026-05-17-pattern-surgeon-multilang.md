@@ -123,7 +123,9 @@ elif [ -f pom.xml ]; then
 elif [ -f build.gradle ] || [ -f build.gradle.kts ]; then
   STACK="gradle"; TYPECHECK="./gradlew -q compileJava"; TEST="./gradlew -q test"
   [ -x ./gradlew ] || { TYPECHECK="gradle -q compileJava"; TEST="gradle -q test"; }
-elif ls ./*.sln ./*.csproj >/dev/null 2>&1; then
+elif compgen -G './*.sln' >/dev/null || compgen -G './*.slnx' >/dev/null || compgen -G './*.csproj' >/dev/null; then
+  # compgen per-pattern: bash leaves a non-matching glob literal, so a single
+  # `ls ./*.sln ./*.csproj` fails for csproj-only or slnx-only .NET projects.
   STACK="dotnet"; TYPECHECK="dotnet build -clp:ErrorsOnly"; TEST="dotnet test --nologo"
 elif [ -f composer.json ]; then
   STACK="composer"
