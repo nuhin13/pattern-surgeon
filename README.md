@@ -8,3 +8,8 @@ Injection. See `docs/superpowers/specs/2026-05-17-pattern-surgeon-design.md`.
 ## Docs
 - Spec: `docs/superpowers/specs/2026-05-17-pattern-surgeon-design.md`
 - Plan: `docs/superpowers/plans/2026-05-17-pattern-surgeon.md`
+
+## Languages
+TS/JS · Python · Java (Spring Boot) · C# (.NET Core) · PHP (Laravel).
+Verification auto-detects the stack; safety contract identical everywhere.
+See `docs/MARKETING.md`.
