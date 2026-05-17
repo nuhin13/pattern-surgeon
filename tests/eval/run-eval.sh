@@ -5,6 +5,10 @@
 set -euo pipefail
 fail=0
 
+# Note: labels here are LANGUAGE-level (java/php/dotnet/python/node) on purpose
+# — this checklist groups fixtures by language. verify.sh uses build-tool-level
+# labels (maven/gradle/composer) because it runs tool-specific commands; the two
+# need not match.
 detect_stack() {
   local d="$1"
   if [ -f "$d/pom.xml" ] || [ -f "$d/build.gradle" ] || [ -f "$d/build.gradle.kts" ]; then
