@@ -67,7 +67,7 @@ rules are shared by every mode.
 
 ### compare (read-only)
 1. Read the named scope only.
-2. Run the Detection rules; keep patterns that plausibly fit (smell present or
+2. Run all 6 Detection rules; keep patterns that plausibly fit (smell present or
    near-miss). Drop the rest.
 3. Score each candidate per `references/comparison-rubric.md`; render the
    matrix (pattern | why-fits-here | tradeoff | when-NOT ruled | verdict).
@@ -93,9 +93,9 @@ rules are shared by every mode.
 Follow `references/greenfield-tdd.md` exactly (it is authoritative for every
 `verify.sh` exit code): confirm behavior → detect language → pick pattern via
 the rubric → write a failing test first → then `safety-harness.md` to
-implement to exit 0 or roll back. Exit-code summary: 3 → proceed; 0 → reroute
-to `refactor`; 2 → fix the test until it compiles and is red, or abort; 4 →
-recommend-only.
+implement to exit 0 or roll back. Exit-code summary: 3 → proceed;
+0 → reroute to `refactor`; 2 → pre-impl: fix the test until it compiles and is
+red, or abort; post-impl: `rollback.sh`; 4 → recommend-only.
 
 ## Legacy / old projects (while this skill is active)
 - Run `scripts/verify.sh` BEFORE any edit (probe).

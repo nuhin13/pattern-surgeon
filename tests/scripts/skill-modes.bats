@@ -69,3 +69,33 @@ SKILL="$BATS_TEST_DIRNAME/../../skills/pattern-surgeon/SKILL.md"
   run bash -c "cd \"$d\" && bash \"$vs\""
   [ "$status" -eq 3 ]
 }
+
+@test "Intent routing maps each trigger phrase to its mode" {
+  [ -f "$SKILL" ]
+  grep -qE '\| `suggest` \|.*what pattern fits' "$SKILL"
+  grep -qE '\| `refactor` \|.*(refactor|messy code|big switch)' "$SKILL"
+  grep -qE '\| `compare` \|.*(compare patterns|which:|why this over that)' "$SKILL"
+  grep -qE '\| `follow` \|.*(match existing patterns|make this consistent)' "$SKILL"
+  grep -qE '\| `greenfield` \|.*implement .* with the right pattern' "$SKILL"
+}
+
+@test "Intent routing mandates ASK on ambiguity with no guess" {
+  [ -f "$SKILL" ]
+  grep -qiE 'ambiguous.*ASK' "$SKILL"
+  grep -qiF "never guess" "$SKILL"
+}
+
+@test "greenfield exit-0 reroute path: impl present -> verify exits 0, reroute rule documented" {
+  src="$BATS_TEST_DIRNAME/../fixtures/greenfield-ts"
+  [ -f "$src/test.js" ]
+  command -v node >/dev/null 2>&1 || skip "node not installed"
+  tmp="$(mktemp -d)"
+  cp "$src/package.json" "$src/test.js" "$tmp/"
+  printf '%s\n' 'function notify(kind, msg){ if(kind==="email") console.log("email", msg); }' 'module.exports = { notify };' > "$tmp/impl.js"
+  vs="$BATS_TEST_DIRNAME/../../skills/pattern-surgeon/scripts/verify.sh"
+  run bash -c "cd \"$tmp\" && bash \"$vs\""
+  rm -rf "$tmp"
+  [ "$status" -eq 0 ]
+  grep -qF "reroute to" "$SKILL"
+  grep -qF "reroute to refactor" "$BATS_TEST_DIRNAME/../../skills/pattern-surgeon/references/greenfield-tdd.md"
+}
