@@ -30,3 +30,20 @@ ROOT="$BATS_TEST_DIRNAME/../../skills/pattern-surgeon/references"
   grep -qF "Strategy" "$f"
   grep -qF "Factory" "$f"
 }
+
+@test "greenfield-tdd.md has per-language test runners" {
+  f="$ROOT/greenfield-tdd.md"
+  [ -f "$f" ]
+  for r in pytest JUnit xUnit PHPUnit vitest; do
+    grep -qF "$r" "$f" || { echo "MISSING runner: $r"; false; }
+  done
+}
+
+@test "greenfield-tdd.md states the exit-3 gate and reroute rule" {
+  f="$ROOT/greenfield-tdd.md"
+  grep -qF "exit 3" "$f"
+  grep -qF "exit 0" "$f"
+  grep -qF "exit 4" "$f"
+  grep -qF "reroute to refactor" "$f"
+  grep -qF "safety-harness.md" "$f"
+}
