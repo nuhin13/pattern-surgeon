@@ -39,15 +39,21 @@ SKILL="$BATS_TEST_DIRNAME/../../skills/pattern-surgeon/SKILL.md"
   grep -qiF "failing test first" "$SKILL"
 }
 
-@test "compare-ambiguous fixture exists with the dual-smell scope" {
+@test "compare-ambiguous fixture genuinely meets Strategy and Factory thresholds" {
   d="$BATS_TEST_DIRNAME/../fixtures/compare-ambiguous-ts"
-  [ -f "$d/src.ts" ]
+  f="$d/src.ts"
+  [ -f "$f" ]
   [ -f "$d/README.md" ]
-  grep -qF "switch" "$d/src.ts"
-  grep -qF "new " "$d/src.ts"
-  grep -qF "export" "$d/src.ts"
+  # Strategy: same kind-switch at >=2 sites
+  sw=$(grep -c 'switch (kind)' "$f")
+  [ "$sw" -ge 2 ]
+  # Factory: family construction (new *Notifier()) in >=3 places
+  ctor=$(grep -cE 'new [A-Za-z]+Notifier\(\)' "$f")
+  [ "$ctor" -ge 3 ]
+  grep -qF "export" "$f"
   grep -qiF "Strategy" "$d/README.md"
   grep -qiF "Factory" "$d/README.md"
+  grep -qiF "call sites" "$d/README.md"
 }
 
 @test "follow-repo fixture: convention + non-conforming target both in scope cap" {
