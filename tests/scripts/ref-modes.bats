@@ -63,18 +63,30 @@ ROOT="$BATS_TEST_DIRNAME/../../skills/pattern-surgeon/references"
   grep -qF "recommended tier" "$f"
 }
 
-@test "greenfield-tdd.md handles post-impl exit 4 as rollback" {
+@test "greenfield-tdd.md post-impl exit 2/3/4 maps to rollback.sh, never recommend-only" {
   f="$ROOT/greenfield-tdd.md"
   [ -f "$f" ]
-  grep -qF "Post-implementation" "$f"
-  grep -qF "exit 2, 3, or 4" "$f"
+  # collapse wrapping so the post-impl sentence is one string
+  flat="$(tr -s '[:space:]' ' ' < "$f")"
+  # post-impl exit 2,3,or 4 must lead to rollback.sh in the same sentence
+  echo "$flat" | grep -qE 'Post-implementation exit 2, 3, or 4 [^.]*rollback\.sh' \
+    || { echo "post-impl 2/3/4 not tied to rollback.sh"; false; }
+  # the intent-guard clarifier must remain (post-impl exit 4 is NOT recommend-only)
+  grep -qF "Exit 4 here is never acceptable" "$f"
+  # pre-impl exit 4 -> recommend-only must still exist (step 4 unchanged)
+  grep -qF "abort to recommend-only" "$f"
 }
 
-@test "comparison-rubric.md verdict tiers are explicitly ordered (no overlap)" {
+@test "comparison-rubric.md verdict is resolved by explicit first-match ordering" {
   f="$ROOT/comparison-rubric.md"
   [ -f "$f" ]
-  grep -qF "first match wins" "$f"
-  grep -qE '1\. `wrong tool here`' "$f"
-  grep -qE '2\. `strong fit`' "$f"
-  grep -qE '3\. `partial`' "$f"
+  grep -qiF "first match wins" "$f"
+  # the three tiers must appear as a numbered list in this exact sequence
+  l1=$(grep -nE '^1\. `wrong tool here`' "$f" | head -1 | cut -d: -f1)
+  l2=$(grep -nE '^2\. `strong fit`'      "$f" | head -1 | cut -d: -f1)
+  l3=$(grep -nE '^3\. `partial`'         "$f" | head -1 | cut -d: -f1)
+  [ -n "$l1" ] && [ -n "$l2" ] && [ -n "$l3" ] || { echo "tier numbering missing"; false; }
+  [ "$l1" -lt "$l2" ] && [ "$l2" -lt "$l3" ] || { echo "tiers out of first-match order"; false; }
+  # ties are broken within the recommended tier (ordering-based, not predicate-exclusive)
+  grep -qF "recommended tier" "$f"
 }
