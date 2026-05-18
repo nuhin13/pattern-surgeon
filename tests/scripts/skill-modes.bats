@@ -50,14 +50,18 @@ SKILL="$BATS_TEST_DIRNAME/../../skills/pattern-surgeon/SKILL.md"
   grep -qiF "Factory" "$d/README.md"
 }
 
-@test "follow-repo fixture has sibling convention plus a non-conforming file" {
+@test "follow-repo fixture: convention + non-conforming target both in scope cap" {
   d="$BATS_TEST_DIRNAME/../fixtures/follow-repo-ts"
   [ -f "$d/repo/UserRepository.ts" ]
   [ -f "$d/repo/OrderRepository.ts" ]
-  [ -f "$d/services/InvoiceService.ts" ]
-  grep -qF "fetch(" "$d/services/InvoiceService.ts"
+  [ -f "$d/repo/InvoiceRepository.ts" ]
+  [ ! -d "$d/services" ]
   grep -qF "fetch(" "$d/repo/UserRepository.ts"
-  grep -qiF "Repository" "$d/README.md"
+  grep -qF "fetch(" "$d/repo/OrderRepository.ts"
+  grep -qF "byId" "$d/repo/UserRepository.ts"
+  ! grep -qF "byId" "$d/repo/InvoiceRepository.ts"
+  grep -qiF "scope cap" "$d/README.md"
+  grep -qiF "same directory" "$d/README.md"
 }
 
 @test "greenfield fixture starts red (verify.sh exits 3, no impl yet)" {
