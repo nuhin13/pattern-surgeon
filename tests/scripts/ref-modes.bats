@@ -69,3 +69,12 @@ ROOT="$BATS_TEST_DIRNAME/../../skills/pattern-surgeon/references"
   grep -qF "Post-implementation" "$f"
   grep -qF "exit 2, 3, or 4" "$f"
 }
+
+@test "comparison-rubric.md verdict tiers are explicitly ordered (no overlap)" {
+  f="$ROOT/comparison-rubric.md"
+  [ -f "$f" ]
+  grep -qF "first match wins" "$f"
+  grep -qE '1\. `wrong tool here`' "$f"
+  grep -qE '2\. `strong fit`' "$f"
+  grep -qE '3\. `partial`' "$f"
+}
