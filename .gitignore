@@ -1,0 +1,34 @@
+# OS/editor metadata
+.DS_Store
+.AppleDouble
+.LSOverride
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Dependency and build outputs
+node_modules/
+dist/
+build/
+coverage/
+
+# Python caches and tool state
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.nox/
+.tox/
+
+# Misc local scratch/cache
+.cache/
+tmp/
+temp/
