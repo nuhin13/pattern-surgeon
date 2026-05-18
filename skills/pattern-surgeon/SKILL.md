@@ -63,6 +63,38 @@ rules are shared by every mode.
 | Observer | manual notify chains / callback fan-out / polling for state | single listener; framework already reactive |
 | Dependency Injection | `new` collaborators in class, hard-coded singletons, hidden deps | pure functions; value objects; leaf utilities |
 
+## Modes
+
+### compare (read-only)
+1. Read the named scope only.
+2. Run the Detection rules; keep patterns that plausibly fit (smell present or
+   near-miss). Drop the rest.
+3. Score each candidate per `references/comparison-rubric.md`; render the
+   matrix (pattern | why-fits-here | tradeoff | when-NOT ruled | verdict).
+4. Recommend one + one line on why it beats the runner-up. Exact tie → state
+   the tie and ASK the user to pick.
+5. No code change. If the user then says go, chain into `refactor` or
+   `greenfield`.
+
+### follow (user-triggered scoped scan)
+1. Only on an explicit "match existing / make consistent" request (keeps the
+   reactive rule). Scope = the named file + sibling files in the same
+   directory + the nearest layer directory (e.g. `services/`). Hard cap — no
+   repo-wide walk.
+2. Census which of the 6 patterns already appear in scope; note local
+   conventions (naming, DI style, framework idiom in use).
+3. The recommendation must conform to the detected convention. If the textbook
+   pattern conflicts with house style, follow house style and state the
+   deviation explicitly.
+4. No pattern detectable in scope → say so; fall back to `suggest`.
+5. If the user wants the edit applied, follow `references/safety-harness.md`.
+
+### greenfield (TDD-first)
+Follow `references/greenfield-tdd.md` exactly: confirm behavior → detect
+language → pick pattern via the rubric → write a failing test first
+(`verify.sh` must show exit 3; exit 0 → reroute to `refactor`; exit 4 →
+recommend-only) → then `safety-harness.md` to implement to exit 0 or roll back.
+
 ## Legacy / old projects (while this skill is active)
 - Run `scripts/verify.sh` BEFORE any edit (probe).
   - Baseline red, or exit 4 (no test script): do NOT auto-refactor. Switch to
@@ -76,6 +108,11 @@ rules are shared by every mode.
 - If the scope file is untracked by git, ask the user to git-add it before refactoring; otherwise rollback cannot restore it — recommend-only.
 
 ## Output contract
-Recommendation: `<pattern>` — why / tradeoff / when-NOT ruled out.
-After apply: changed files + behavior preserved, or rolled-back diff + first
-failure + one retry offer.
+- `suggest` / `refactor` / `follow`: Recommendation `<pattern>` — why /
+  tradeoff / when-NOT ruled out. After apply: changed files + behavior
+  preserved, or rolled-back diff + first failure + one retry offer.
+- `compare`: the candidate matrix + the single recommendation and why it beats
+  the runner-up. No code change.
+- `greenfield`: the failing test first (verify exit 3 shown), then changed
+  files + behavior verified (exit 0), or rolled-back diff + first failure +
+  one retry offer.

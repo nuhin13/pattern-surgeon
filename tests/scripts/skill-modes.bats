@@ -21,3 +21,20 @@ SKILL="$BATS_TEST_DIRNAME/../../skills/pattern-surgeon/SKILL.md"
   echo "$hdr" | grep -qiF "C#"
   echo "$hdr" | grep -qiF "PHP"
 }
+
+@test "SKILL.md has a Modes block with the three new procedures" {
+  [ -f "$SKILL" ]
+  grep -qF "## Modes" "$SKILL"
+  grep -qF "### compare" "$SKILL"
+  grep -qF "### follow" "$SKILL"
+  grep -qF "### greenfield" "$SKILL"
+  grep -qF "comparison-rubric.md" "$SKILL"
+  grep -qF "greenfield-tdd.md" "$SKILL"
+  grep -qF "sibling files" "$SKILL"
+}
+
+@test "SKILL.md Output contract covers compare and greenfield" {
+  [ -f "$SKILL" ]
+  grep -qF "matrix" "$SKILL"
+  grep -qiF "failing test first" "$SKILL"
+}
