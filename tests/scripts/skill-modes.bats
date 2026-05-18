@@ -38,3 +38,13 @@ SKILL="$BATS_TEST_DIRNAME/../../skills/pattern-surgeon/SKILL.md"
   grep -qF "matrix" "$SKILL"
   grep -qiF "failing test first" "$SKILL"
 }
+
+@test "compare-ambiguous fixture exists with the dual-smell scope" {
+  d="$BATS_TEST_DIRNAME/../fixtures/compare-ambiguous-ts"
+  [ -f "$d/src.ts" ]
+  [ -f "$d/README.md" ]
+  grep -qF "switch" "$d/src.ts"
+  grep -qF "new " "$d/src.ts"
+  grep -qiF "Strategy" "$d/README.md"
+  grep -qiF "Factory" "$d/README.md"
+}
