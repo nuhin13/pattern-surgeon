@@ -32,10 +32,21 @@ first match wins:**
 
 ## Recommendation and tie-break
 
-Recommend the highest-scoring `strong fit`. State one line on why it beats the
-runner-up.
+Pick the recommended tier in this order:
 
-**Tie-break order** (apply when top two totals are equal):
+1. If ≥1 candidate is `strong fit` → the recommended tier is `strong fit`.
+2. No `strong fit` but ≥1 `partial` → the recommended tier is `partial`.
+   Recommend the highest-scoring `partial`, explicitly flagged: "partial fit
+   only — apply only if the smell is confirmed; otherwise leave the scope
+   as-is."
+3. All `wrong tool here` (no `strong fit`, no `partial`) → recommend NONE.
+   State that no pattern fits this scope and do not refactor.
+
+Recommend the highest-scoring candidate within the recommended tier and state
+one line on why it beats the runner-up.
+
+**Tie-break order** (apply when the top two candidates *within the recommended
+tier* have equal totals):
 
 1. Lower added-indirection cost wins (higher indir score wins).
 2. Then higher framework-idiom conflict score (better idiom fit) wins.

@@ -48,3 +48,17 @@ ROOT="$BATS_TEST_DIRNAME/../../skills/pattern-surgeon/references"
   grep -qF "reroute to refactor" "$f"
   grep -qF "safety-harness.md" "$f"
 }
+
+@test "comparison-rubric.md defines the no-strong-fit recommendation" {
+  f="$ROOT/comparison-rubric.md"
+  [ -f "$f" ]
+  grep -qF "No \`strong fit\`" "$f"
+  grep -qF "highest-scoring \`partial\`" "$f"
+  grep -qF "All \`wrong tool here\`" "$f"
+}
+
+@test "comparison-rubric.md tie-break applies to the recommended tier" {
+  f="$ROOT/comparison-rubric.md"
+  [ -f "$f" ]
+  grep -qF "recommended tier" "$f"
+}
