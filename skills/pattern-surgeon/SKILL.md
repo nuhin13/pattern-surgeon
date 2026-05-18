@@ -1,6 +1,6 @@
 ---
 name: pattern-surgeon
-description: Use when the user names a TS/JS file or function and asks what design pattern fits, says the code is messy/has a big switch or conditional, or asks to refactor to a pattern. Recommends one of Strategy/Factory/Adapter/Repository/Observer/Dependency-Injection, applies it, and reverts unless typecheck and tests stay green.
+description: Use when the user names a TS/JS/Python/Java/C#/PHP file or function and asks what design pattern fits, asks to compare which pattern (and why/how it fits), to refactor to a pattern, to make new code match existing patterns ("match existing", "make this consistent"), or to implement new behavior with the right pattern. Recommends one of Strategy/Factory/Adapter/Repository/Observer/Dependency-Injection, applies it, and reverts unless typecheck and tests stay green. Reactive only — never scans the repo unprompted.
 ---
 
 # pattern-surgeon
@@ -26,6 +26,22 @@ Framework when-NOT (suppress hand-rolled machinery):
   provides; recommend the framework idiom, otherwise suppress.
 - Laravel → data access belongs in Eloquent/repository per Laravel convention;
   don't introduce a foreign data layer.
+
+## Intent routing
+Before the Procedure, map the request to exactly one mode. Ambiguous between
+two modes → ASK the user which; never guess.
+
+| Mode | Trigger | Mutates code? |
+|---|---|---|
+| `suggest` | "what pattern fits X" | no |
+| `refactor` | "refactor X to a pattern" / messy code / big switch | yes |
+| `compare` | "which: A or B", "compare patterns for X", "why this over that" | no |
+| `follow` | "match existing patterns here", "make this consistent" | optional |
+| `greenfield` | "implement X with the right pattern" (X not yet coded) | yes |
+
+`suggest` + `refactor` use the Procedure below. `compare`, `follow`,
+`greenfield` use `## Modes`. Language/framework detection and the Detection
+rules are shared by every mode.
 
 ## Procedure
 1. Read the named scope only.
