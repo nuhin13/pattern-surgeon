@@ -73,8 +73,8 @@ rules are shared by every mode.
    matrix (pattern | why-fits-here | tradeoff | when-NOT ruled | verdict).
 4. Recommend one + one line on why it beats the runner-up. Exact tie → state
    the tie and ASK the user to pick.
-5. No code change. If the user then says go, chain into `refactor` or
-   `greenfield`.
+5. No code change. If the user then says go, chain into `refactor`; if no
+   code exists yet, chain into `greenfield`.
 
 ### follow (user-triggered scoped scan)
 1. Only on an explicit "match existing / make consistent" request (keeps the
@@ -90,10 +90,12 @@ rules are shared by every mode.
 5. If the user wants the edit applied, follow `references/safety-harness.md`.
 
 ### greenfield (TDD-first)
-Follow `references/greenfield-tdd.md` exactly: confirm behavior → detect
-language → pick pattern via the rubric → write a failing test first
-(`verify.sh` must show exit 3; exit 0 → reroute to `refactor`; exit 4 →
-recommend-only) → then `safety-harness.md` to implement to exit 0 or roll back.
+Follow `references/greenfield-tdd.md` exactly (it is authoritative for every
+`verify.sh` exit code): confirm behavior → detect language → pick pattern via
+the rubric → write a failing test first → then `safety-harness.md` to
+implement to exit 0 or roll back. Exit-code summary: 3 → proceed; 0 → reroute
+to `refactor`; 2 → fix the test until it compiles and is red, or abort; 4 →
+recommend-only.
 
 ## Legacy / old projects (while this skill is active)
 - Run `scripts/verify.sh` BEFORE any edit (probe).
@@ -108,9 +110,11 @@ recommend-only) → then `safety-harness.md` to implement to exit 0 or roll back
 - If the scope file is untracked by git, ask the user to git-add it before refactoring; otherwise rollback cannot restore it — recommend-only.
 
 ## Output contract
-- `suggest` / `refactor` / `follow`: Recommendation `<pattern>` — why /
-  tradeoff / when-NOT ruled out. After apply: changed files + behavior
-  preserved, or rolled-back diff + first failure + one retry offer.
+- `suggest`, plus `follow` on its recommend-only path: Recommendation
+  `<pattern>` — why / tradeoff / when-NOT ruled out. No code change.
+- `refactor`, plus `follow` when the user applies the edit: Recommendation
+  `<pattern>` — why / tradeoff / when-NOT ruled out, then changed files +
+  behavior preserved, or rolled-back diff + first failure + one retry offer.
 - `compare`: the candidate matrix + the single recommendation and why it beats
   the runner-up. No code change.
 - `greenfield`: the failing test first (verify exit 3 shown), then changed
