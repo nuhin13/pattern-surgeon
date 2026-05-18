@@ -45,6 +45,7 @@ SKILL="$BATS_TEST_DIRNAME/../../skills/pattern-surgeon/SKILL.md"
   [ -f "$d/README.md" ]
   grep -qF "switch" "$d/src.ts"
   grep -qF "new " "$d/src.ts"
+  grep -qF "export" "$d/src.ts"
   grep -qiF "Strategy" "$d/README.md"
   grep -qiF "Factory" "$d/README.md"
 }

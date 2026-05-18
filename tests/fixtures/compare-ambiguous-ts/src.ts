@@ -1,5 +1,7 @@
-// Dual smell: switch on `kind` (Strategy candidate) AND constructs a
-// different collaborator per branch (Factory candidate). Used across 3 sites.
+// Dual smell: a 3-case switch on `kind` (Strategy candidate) that also
+// constructs a different collaborator per branch (Factory candidate). In a
+// real codebase `notify` is invoked from multiple call sites; the fixture
+// isolates the scope under review.
 interface Notifier { send(msg: string): void }
 
 class EmailNotifier implements Notifier { send(m: string) { console.log("email", m); } }
