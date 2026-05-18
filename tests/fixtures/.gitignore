@@ -1,0 +1,12 @@
+node_modules/
+package-lock.json
+__pycache__/
+.venv/
+*.pyc
+target/
+build/
+.gradle/
+bin/
+obj/
+vendor/
+composer.lock
