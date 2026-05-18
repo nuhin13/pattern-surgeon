@@ -5,7 +5,7 @@ Eval anchor for `follow` mode. `repo/` establishes a Repository convention
 `services/InvoiceService.ts` violates it with a raw `fetch`.
 
 Expected `follow` output: scoped scan (named file + `services/` siblings +
-nearest layer) detects the Repository convention; recommendation introduces an
-`OrderRepository`-style access for `InvoiceService`, conforming to the existing
-naming/structure rather than a textbook variant. Scan must not exceed the
+nearest layer) detects the Repository convention; recommendation has `InvoiceService` depend on the existing `OrderRepository`
+(reuse the established repo, do NOT introduce a parallel `InvoiceRepository`),
+conforming to the existing naming/structure rather than a textbook variant. Scan must not exceed the
 scope cap (no repo-wide walk).

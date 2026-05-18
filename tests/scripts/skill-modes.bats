@@ -56,5 +56,6 @@ SKILL="$BATS_TEST_DIRNAME/../../skills/pattern-surgeon/SKILL.md"
   [ -f "$d/repo/OrderRepository.ts" ]
   [ -f "$d/services/InvoiceService.ts" ]
   grep -qF "fetch(" "$d/services/InvoiceService.ts"
+  grep -qF "fetch(" "$d/repo/UserRepository.ts"
   grep -qiF "Repository" "$d/README.md"
 }
