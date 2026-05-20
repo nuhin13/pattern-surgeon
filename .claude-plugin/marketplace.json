@@ -1,6 +1,10 @@
 {
-  "name": "nuhin13 Claude Plugins",
+  "name": "nuhin13",
   "description": "Open-source Claude Code plugins by nuhin13",
+  "owner": {
+    "name": "Nuhin",
+    "url": "https://github.com/nuhin13"
+  },
   "plugins": [
     {
       "name": "pattern-surgeon",
