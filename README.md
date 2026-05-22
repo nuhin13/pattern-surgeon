@@ -81,18 +81,6 @@ bats tests/scripts/                          # run all 8 test suites
 
 ---
 
-## Real-world accuracy
-
-Want proof this isn't a toy? Read [`docs/case-studies/`](docs/case-studies/) — real
-production refactors driven by the skill, with the full compare-mode scoring
-matrix (including which patterns were **rejected** and why), before/after code,
-LOC delta, and verification steps.
-
-Current case studies:
-- [**01 — Interview microservice (Python / FastAPI / gRPC)**](docs/case-studies/01-interview-module-strategy.md) — Strategy pattern (compare-mode 9/10). Replaced a 3-branch if/elif quality router + baked-in heuristic evaluator with a Protocol + Enum + Strategy registry. Public API unchanged. ~-20 LOC net. LLM-evaluator swap reduced to 1 line at composition root. Skill explicitly rejected Factory (7/10), Repository (6/10), and DI (5/10) with stated reasons.
-
----
-
 ## Install
 
 ### Option 1 — Claude Code plugin
@@ -252,8 +240,19 @@ folder's README.
 
 ---
 
+## Real-world accuracy
+
+Want proof this isn't a toy? Read [`docs/case-studies/`](docs/case-studies/) — real
+production refactors driven by the skill, with the full compare-mode scoring
+matrix (including which patterns were **rejected** and why), before/after code,
+LOC delta, and verification steps.
+
+Current case studies:
+- [**01 — Interview microservice (Python / FastAPI / gRPC)**](docs/case-studies/01-interview-module-strategy.md) — Strategy pattern (compare-mode 9/10). Replaced a 3-branch if/elif quality router + baked-in heuristic evaluator with a Protocol + Enum + Strategy registry. Public API unchanged. ~-20 LOC net. LLM-evaluator swap reduced to 1 line at composition root. Skill explicitly rejected Factory (7/10), Repository (6/10), and DI (5/10) with stated reasons.
+
+---
+
 ## Docs
 
 - Full usage guide with worked examples: [`USAGE.md`](USAGE.md)
 - Cross-CLI (Codex, Cursor, Aider, Gemini, Windsurf, Continue): [`docs/CROSS-CLI.md`](docs/CROSS-CLI.md)
-- Case studies (real production refactors): [`docs/case-studies/`](docs/case-studies/)
