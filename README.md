@@ -13,6 +13,8 @@ Also works with Codex CLI, Aider, Gemini CLI, Cursor, Windsurf, and Continue —
 "Implement notify(kind, msg) with the right pattern"
 ```
 
+**See it on real code →** [Case studies](docs/case-studies/) — production refactors with scoring matrices, before/after diffs, and verification.
+
 ---
 
 ## Trust & Transparency
@@ -66,6 +68,18 @@ cat skills/pattern-surgeon/SKILL.md          # the full skill instructions
 cat skills/pattern-surgeon/scripts/verify.sh # the verification script
 bats tests/scripts/                          # run all 8 test suites
 ```
+
+---
+
+## Real-world accuracy
+
+Want proof this isn't a toy? Read [`docs/case-studies/`](docs/case-studies/) — real
+production refactors driven by the skill, with the full compare-mode scoring
+matrix (including which patterns were **rejected** and why), before/after code,
+LOC delta, and verification steps.
+
+Current case studies:
+- [**01 — Interview microservice (Python / FastAPI / gRPC)**](docs/case-studies/01-interview-module-strategy.md) — Strategy pattern (compare-mode 9/10). Replaced a 3-branch if/elif quality router + baked-in heuristic evaluator with a Protocol + Enum + Strategy registry. Public API unchanged. ~-20 LOC net. LLM-evaluator swap reduced to 1 line at composition root. Skill explicitly rejected Factory (7/10), Repository (6/10), and DI (5/10) with stated reasons.
 
 ---
 
@@ -205,7 +219,9 @@ skills/pattern-surgeon/      ← the skill itself
   marketplace.json
 tests/                       ← BATS test suites (8 suites, 40+ tests)
   fixtures/                  ← language fixtures for each test scenario
-docs/                        ← CROSS-CLI.md, usage guides
+docs/
+  CROSS-CLI.md               ← using the skill from Codex/Aider/Cursor/etc.
+  case-studies/              ← real refactors driven by the skill
 ```
 
 ---
@@ -220,9 +236,14 @@ bats tests/scripts/   # run all 8 test suites — must pass before any PR
 All pattern reference files, skill instructions, and safety scripts are plain
 Markdown and bash — readable and auditable by anyone.
 
+Have you used pattern-surgeon on a real refactor? Open a PR to add a case study
+under [`docs/case-studies/`](docs/case-studies/). Format guide is in that
+folder's README.
+
 ---
 
 ## Docs
 
 - Full usage guide with worked examples: [`USAGE.md`](USAGE.md)
 - Cross-CLI (Codex, Cursor, Aider, Gemini, Windsurf, Continue): [`docs/CROSS-CLI.md`](docs/CROSS-CLI.md)
+- Case studies (real production refactors): [`docs/case-studies/`](docs/case-studies/)
