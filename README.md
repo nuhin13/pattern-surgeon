@@ -4,6 +4,8 @@ Reactive design-pattern skill for Claude Code. Point it at a file; it recommends
 applies, and auto-reverts one of six patterns across nine language stacks.
 Typecheck + tests must stay green — or the change is rolled back automatically.
 
+Also works with Codex CLI, Aider, Gemini CLI, Cursor, Windsurf, and Continue — see [docs/CROSS-CLI.md](docs/CROSS-CLI.md).
+
 ```
 "What pattern fits src/checkout.ts?"
 "Refactor this pricing logic — it has a big if-else chain"
@@ -223,4 +225,4 @@ Markdown and bash — readable and auditable by anyone.
 ## Docs
 
 - Full usage guide with worked examples: [`USAGE.md`](USAGE.md)
-- Cross-CLI (Codex, Cursor, Aider, Gemini): [`docs/CROSS-CLI.md`](docs/CROSS-CLI.md)
+- Cross-CLI (Codex, Cursor, Aider, Gemini, Windsurf, Continue): [`docs/CROSS-CLI.md`](docs/CROSS-CLI.md)
