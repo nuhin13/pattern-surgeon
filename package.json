@@ -8,7 +8,7 @@
   "homepage": "https://github.com/nuhin13/pattern-surgeon",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nuhin13/pattern-surgeon.git"
+    "url": "git+https://github.com/nuhin13/pattern-surgeon.git"
   },
   "bin": {
     "pattern-surgeon": "bin/install.js"
