@@ -4,14 +4,8 @@
   "version": "1.0.0",
   "author": {
     "name": "Nuhin",
-    "url": "https://github.com/nuhin13"
+    "email": "nuhin13@gmail.com"
   },
   "homepage": "https://github.com/nuhin13/pattern-surgeon",
-  "license": "MIT",
-  "allowedTools": ["Bash", "Read"],
-  "permissions": {
-    "filesystem": "read-only (named file only)",
-    "network": "none",
-    "shell": "verify.sh, checkpoint.sh, rollback.sh only"
-  }
+  "license": "MIT"
 }
