@@ -1,5 +1,16 @@
 # Adapter
 
+## GoF participants
+- **Target** — the domain interface the client expects (the `Port`).
+- **Adaptee** — the existing incompatible class or API (the 3rd-party library).
+- **Adapter** — wraps the Adaptee, implements Target, translates calls and data shapes between the two.
+- **Client** — depends only on the Target interface; never imports the Adaptee directly.
+
+> This file shows the **Object Adapter** variant (composition — wrapping the
+> Adaptee instance). The **Class Adapter** variant (multiple inheritance) is
+> theoretically possible in languages that support it but is rarely needed and
+> should be avoided where composition is practical.
+
 ## Smell signature
 A 3rd-party library API is called directly across many modules, its signature
 mismatches the domain, and swapping the library would touch every call site.

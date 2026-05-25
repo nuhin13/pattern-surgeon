@@ -1,6 +1,6 @@
 ---
 name: pattern-surgeon
-description: Use when the user names a TS/JS/Python/Java/C#/PHP/Kotlin/Dart/Swift file or function and asks what design pattern fits, asks to compare which pattern (and why/how it fits), to refactor to a pattern, to make new code match existing patterns ("match existing", "make this consistent"), or to implement new behavior with the right pattern. Recommends one of Strategy/Factory/Adapter/Repository/Observer/Dependency-Injection, applies it, and reverts unless typecheck and tests stay green. Reactive only — never scans the repo unprompted.
+description: Use when the user names a TS/JS/Python/Java/C#/PHP/Kotlin/Dart/Swift file or function and asks what design pattern fits, asks to compare which pattern (and why/how it fits), to refactor to a pattern, to make new code match existing patterns ("match existing", "make this consistent"), or to implement new behavior with the right pattern. Recommends one of Strategy/Factory-Method/Adapter/Repository/Observer/Dependency-Injection, applies it, and reverts unless typecheck and tests stay green. Reactive only — never scans the repo unprompted.
 allowed-tools: Bash Read
 argument-hint: [file-or-scope] [mode?]
 ---
@@ -44,9 +44,10 @@ Framework when-NOT (suppress hand-rolled machinery):
   prefer `@Environment`/`@EnvironmentObject` for SwiftUI dependency passing.
 
 ## Lazy Loading Protocol
-Pattern reference files are large. Load them only when needed — never
-speculatively. The inline Detection rules table below is sufficient for
-initial candidate matching without reading any pattern file.
+Pattern reference files are large sibling files stored under `references/`.
+Load them only when needed — never speculatively. The inline Detection rules
+table below is sufficient for initial candidate matching without reading any
+pattern file.
 
 | Mode | Load on activation | Load after detection |
 |---|---|---|
@@ -58,6 +59,7 @@ initial candidate matching without reading any pattern file.
 
 Never load all 6 pattern files simultaneously unless every pattern scored smell-match > 0
 in the Detection rules pass. Loading one pattern file instead of all six saves ~10 000 tokens.
+Pattern files are named: `strategy`, `factory-method`, `adapter`, `repository`, `observer`, `dependency-injection`.
 
 ## Intent routing
 Before the Procedure, map the request to exactly one mode. Ambiguous between
@@ -90,7 +92,7 @@ rules are shared by every mode.
 | Pattern | Fire when | Suppress when |
 |---|---|---|
 | Strategy | same switch/if-else on type/enum/string ≥2 sites, branches differ only by algorithm | 1 site; shared heavy state; <3 cases |
-| Factory | `new X()` of one family in ≥3 places needing conditional/config | trivial single construction; DI owns it |
+| Factory Method | `new X()` of one family in ≥3 places needing conditional/config; creator varies product type | trivial single construction; DI owns it |
 | Adapter | 3rd-party API called directly across modules, signature mismatch | 1 call site; lib already matches domain |
 | Repository | raw ORM/SQL/fetch inside service/UI/business logic | already behind a data layer; one-off script |
 | Observer | manual notify chains / callback fan-out / polling for state | single listener; framework already reactive |

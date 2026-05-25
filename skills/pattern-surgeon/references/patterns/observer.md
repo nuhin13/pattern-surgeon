@@ -1,5 +1,17 @@
 # Observer
 
+## GoF participants
+- **Subject** — maintains the observer list; provides `attach(observer)`, `detach(observer)`, and `notify()`.
+- **ConcreteSubject** — stores the state that triggers notifications; calls `notify()` on every relevant state change.
+- **Observer** — interface declaring `update(event)` (or equivalent callback signature).
+- **ConcreteObserver** — implements `Observer`; reacts to Subject state changes in `update()`.
+
+> The callback / lambda form shown below is the modernized idiom (no formal
+> `Observer` interface class needed). For large observer sets where observers
+> need to query Subject state, prefer the formal `update()` interface
+> (**GoF pull model**): the observer calls back into the Subject to read
+> only what it needs rather than receiving all data in the pushed event.
+
 ## Smell signature
 Manual cross-object notification chains, callback fan-out, or polling a flag to
 detect state change; adding a new reaction means editing the producer. Example:

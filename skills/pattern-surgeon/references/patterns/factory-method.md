@@ -1,4 +1,19 @@
-# Factory
+# Factory Method
+
+## GoF participants
+- **Creator** — abstract class (or interface) declaring the factory method `createProduct()` and optionally using it in other methods; subclasses override the factory method.
+- **ConcreteCreator** — subclass of Creator; overrides `createProduct()` to return a specific `ConcreteProduct`.
+- **Product** — interface defining the type all created objects share.
+- **ConcreteProduct** — a specific implementation of `Product` returned by one `ConcreteCreator`.
+
+> GoF canonical form: the factory method is defined on a Creator base class and
+> overridden in subclasses — the _subclass_ decides which Product to instantiate,
+> not a runtime parameter. See TypeScript example below.
+>
+> **Practical shortcut** used in most modern codebases: a static factory function
+> or class that selects the product via a config/enum parameter. All language
+> examples use this shortcut. It delivers the same isolation benefit (callers
+> depend on the interface, not concretes) with less inheritance overhead.
 
 ## Smell signature
 `new X()` of one family is scattered across ≥3 places and construction needs a
@@ -8,6 +23,39 @@ conditional or config to pick the concrete type. Example:
 const conn = cfg.driver === "pg"
   ? new PgConn(cfg.url)
   : new MySQLConn(cfg.url);
+```
+
+### GoF canonical form (TypeScript)
+Use when the _type_ of product is determined by which Creator subclass is
+instantiated rather than by a runtime parameter:
+```ts
+interface Conn { kind: string; query(sql: string): string[] }
+
+class PgConn implements Conn {
+  kind = "pg";
+  query(sql: string) { return [`pg:${sql}`]; }
+}
+class MySQLConn implements Conn {
+  kind = "mysql";
+  query(sql: string) { return [`mysql:${sql}`]; }
+}
+
+abstract class ConnCreator {
+  abstract createConn(): Conn;          // factory method
+  connect(): Conn { return this.createConn(); }
+}
+
+class PgCreator extends ConnCreator {
+  createConn(): Conn { return new PgConn(); }
+}
+
+class MySQLCreator extends ConnCreator {
+  createConn(): Conn { return new MySQLConn(); }
+}
+
+// callers receive a ConnCreator, never a concrete:
+// const creator: ConnCreator = cfg.driver === "pg" ? new PgCreator() : new MySQLCreator();
+// const conn = creator.connect();
 ```
 
 ## When NOT to apply
@@ -243,4 +291,6 @@ constructed object's methods.
 
 ## Pitfalls
 Don't add a factory for a single stable constructor (YAGNI). Don't let the
-factory leak concrete types in its return signature.
+factory leak concrete types in its return signature. Prefer the GoF Creator
+subclass form only when the product type must be fixed by the creator's class
+identity, not by a runtime config value.

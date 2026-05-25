@@ -1,5 +1,23 @@
 # Strategy
 
+## GoF participants
+- **Context** — holds a reference to the active `Strategy`; delegates algorithm execution to it; may allow the strategy to be swapped at runtime via a setter.
+- **Strategy** — interface (or protocol/abstract class) declaring the algorithm method signature.
+- **ConcreteStrategy** — one class per algorithm variant; implements `Strategy`.
+
+> The lookup-map recipe below is the idiomatic modern form (no explicit Context
+> class needed). Use a Context class with a `setStrategy()` setter when the
+> strategy must change after construction (runtime swap):
+> ```ts
+> class PricingContext {
+>   constructor(private strategy: PricingStrategy) {}
+>   setStrategy(s: PricingStrategy) { this.strategy = s; }
+>   price(base: number) { return this.strategy.price(base); }
+> }
+> const ctx = new PricingContext(new Regular());
+> ctx.setStrategy(new Vip()); // swap at runtime
+> ```
+
 ## Smell signature
 The same `switch`/`if-else` over a type/enum/string appears in ≥2 sites and
 branches differ only by algorithm. Example:
